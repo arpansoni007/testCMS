@@ -9,9 +9,9 @@ use DB;
 
 class CategoryRepository  implements RepositoryInterface
 {  
-
+  
     public $model;
-
+    public const pageSize = 10;
     public function __construct(Model $model)
     {
          $this->model = $model;
@@ -22,7 +22,7 @@ class CategoryRepository  implements RepositoryInterface
     public function getAll()
     {
         try{
-            $data = $this->model->get();
+            $data = $this->model->paginate(10);
             return $data;
         }  
         catch(Exception $e)
@@ -55,7 +55,18 @@ class CategoryRepository  implements RepositoryInterface
 
     public function update(Request $request,$id)
     {
-
+        try{ 
+            DB::beginTransaction();
+            $data = $this->model->find($id);
+            $data->update($request->all());
+            DB::commit();
+            return $data;
+          
+        }
+        catch(Exception $e)
+        {     DB::rollback();
+              return $e->getMessage();
+        }
     }
 
 
@@ -63,14 +74,35 @@ class CategoryRepository  implements RepositoryInterface
 
     public function show($id)
     {
-
+        try{ 
+            $data = $this->model->find($id);
+            return $data;
+          
+        }
+        catch(Exception $e)
+        {     
+              return $e->getMessage();
+        }
     }
 
     
     /* ----------------------------- Delete Function ---------------------------- */
 
     public function delete($id)
-    {
+    {   
+
+        try{ 
+            
+            $data = $this->model->find($id)
+            $data->delete();
+           
+            return $data;
+          
+        }
+        catch(Exception $e)
+        {     
+              return $e->getMessage();
+        }
 
     }
 
