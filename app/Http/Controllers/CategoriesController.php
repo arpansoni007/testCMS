@@ -60,7 +60,6 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -70,8 +69,9 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+        $category = $this->category->show($id);
+        return view('categories.edit')->with('category',$category)->with('id',$id);
     }
 
     /**
@@ -83,7 +83,10 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->category->update($request,$id);
+        Session::flash('success','Category Update Successfully');
+        return redirect()->route('categories.index');
+       
     }
 
     /**
@@ -93,7 +96,9 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {  
+        $this->category->delete($id);
+        Session::flash('success','Category Deleted Successfully');
+        return redirect()->route('categories.index');
     }
 }
