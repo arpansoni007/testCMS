@@ -16,14 +16,14 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-white bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -77,12 +77,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <ul class="ul list-group">
-                            <li class="list-group-item">
-                                <a href="">Post</a>
+                        <ul class="ul list-group ">
+                            <li class="list-group-item bg-dark">
+                                <a href="" class="text-secondary">Post</a>
                             </li>
                             <li class="list-group-item">
-                                <a href="">Category</a>
+                                <a href="{{ route('categories.index')}}" class="text-secondary">Category</a>
                             </li>
                         </ul>
                     </div>
