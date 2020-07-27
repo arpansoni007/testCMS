@@ -42,6 +42,7 @@
 
             </thead>
             <tbody>
+                
                 @foreach($categories as $category)
                 <tr>
                     <td width="75%">{{$category->name}}</td>

@@ -6,17 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use App\Http\Requests\PostRequest;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Session;
 
 class PostsController extends Controller
 {   
     public $posts;
-
-    public function __construct(Post $posts)
+    public $model;
+    public $category;
+    public function __construct(Post $posts,Category $category)
     {   
-        
+        $this->model = $posts;
         $this->posts = new PostRepository($posts);
+        $this->category = $category;
+
+        $this->middleware('verify.categories.count')->only(['create','store']);
     }
     /**
      * Display a listing of the resource.
@@ -26,8 +31,8 @@ class PostsController extends Controller
     public function index(Post $post)
     {   
         $posts = $this->posts->getAll();
-        
-        return view('posts.index')->with('posts',$posts);
+        $categories = $this->category->all();
+        return view('posts.index')->with('posts',$posts)->with('categories',$categories);
     }
 
     /**
@@ -36,8 +41,9 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('posts.create');
+    {   
+        $categories = $this->category->all();
+        return view('posts.create')->with('categories',$categories);
     }
 
     /**
@@ -47,7 +53,8 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PostRequest $request)
-    {  
+    {   
+        
         $this->posts->create($request);
         Session::flash('success','Post Created Successfully');
         return redirect()->route('posts.index');
@@ -73,7 +80,8 @@ class PostsController extends Controller
     public function edit($id)
     {   
         $posts = $this->posts->show($id);
-        return view('posts.edit')->with('posts',$posts);
+        $categories = $this->category->all();
+        return view('posts.edit')->with('posts',$posts)->with('categories',$categories);
     }
 
     /**
@@ -99,7 +107,7 @@ class PostsController extends Controller
     public function destroy($id)
     {  
         $post = Post::withTrashed()->findOrFail($id);
-        $post->trashed() ? $post->forceDelete() && \Storage::delete($post->image) : $this->posts->delete($id);
+        $post->trashed() ? $post->forceDelete() && $post->deleteImage() : $this->posts->delete($id);
         Session::flash('success','Post Deleted Successfully');
         return redirect()->route('posts.index');
     }
@@ -115,6 +123,21 @@ class PostsController extends Controller
         $posts = Post::onlyTrashed()->paginate(\Config::get('default.perPage'));
         return view('posts.index')->with('posts',$posts);
     }
+
+
+    /**
+     * Restore Trashed
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {   
+        $posts = Post::onlyTrashed()->findOrFail($id);
+        $posts->restore();
+        return redirect()->route('posts.index');
+    }
+
 
 
    

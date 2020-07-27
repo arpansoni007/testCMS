@@ -28,6 +28,7 @@ class PostRequest extends FormRequest
         $rules['description'] = 'required';
         $rules['content'] = 'required';
         $rules['photo'] = 'required|image';
+        $rules['category_id'] = 'required|integer';
 
         if(\Request::method() == 'PUT')
         {   $id = \Request::segment(2) ? \Request::segment(2) : 0;

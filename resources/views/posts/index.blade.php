@@ -38,6 +38,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Image</th>
+                    <th>Category</th>
                     <th>Published At</th>
                     <th>Action</th>
                 </tr>
@@ -48,11 +49,20 @@
                 @foreach($posts as $post)
                 <tr>
                     <td width="13%">{{$post->name}}</td>
-                    <td width="40%"><img width="50%" height="40%" src="{{ Storage::url($post->image) }}"></img></td>
+                    <td width="30%"><img width="40%" height="30%" src="{{ Storage::url($post->image) }}"></img></td>
+                    <td width="10%">@if($categories->count() > 0)<a href="{{ route('categories.edit',['category'=>$post->category->id])}}">{{$post->category->name}}</a>@endif</td>
                     <td width="22%">{{$post->published_at}}</td>
-                   
-                    <td width="45%"> <a href="{{route('posts.edit',[$post->id])}}" class="btn btn-info">Edit</a>
-                    <form style="display:inline;" action="{{route('posts.destroy',[$post->id])}}" method="POST">
+                    <td width="50%"> 
+                    @if($post->trashed())
+                    <form action="{{route('posts.restore',[$post->id])}}" method="POST"> 
+                        @csrf 
+                        @method('PUT')
+                    <button type="submit"  class="btn btn-info">Restore</button>
+                    </form> 
+                    @else
+                    <a href="{{route('posts.edit',[$post->id])}}" class="btn btn-info">Edit</a>
+                    @endif
+                    <form style="display:inline;"  action="{{route('posts.destroy',[$post->id])}}" method="POST">
                     @method('DELETE')
                     @csrf
                        

@@ -61,6 +61,9 @@ class PostRepository  implements RepositoryInterface
         try{ 
             DB::beginTransaction();
             $data = $this->model->find($id);
+            $image = $request->hasFile('photo') ? $request->photo->store('public') : null;
+            $this->model->deleteImage();
+            $request->merge(['image' => $image]);
             $data->update($request->all());
             DB::commit();
             return $data;

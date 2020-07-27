@@ -16,7 +16,12 @@
         </div>
     @endforeach
     @endif
-        
+    @if(session()->has('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+            {{session('error')}}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>   
+    </div>
+    @endif
     
     <div class="card-body">
         <form action="{{ route('categories.store')}}" method="POST">

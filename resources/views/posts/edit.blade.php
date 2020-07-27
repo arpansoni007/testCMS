@@ -39,8 +39,17 @@
                 <input type="text" class="form-control" id="published_at" value="{{$posts->published_at}}"  name="published_at"/>
             </div>
             <div class="form-gro mb-2">
-                <label for="image">Image</label>
-                <input type="file" class="form-control" id="image" value="{{$posts->image}}"  name="image"/>
+                <label for="category_id">Category</label>
+                <select name="category_id" id="category_id" class="form-control">
+                 @foreach($categories as $category)   
+                
+                 <option value="{{$category->id}}" <?php if($category->id == $posts->category_id) { echo "selected";} ?> >{{$category->name}}</option>
+                 @endforeach
+                </select>   
+            </div>
+            <div class="form-gro mb-2">
+                <label for="photo">Photo</label>
+                <input type="file" class="form-control"  name="photo" id="photo" value="{{$posts->image}}" />
             </div>
 
             <div class="form-group float-right">
