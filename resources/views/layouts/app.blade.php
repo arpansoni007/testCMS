@@ -9,16 +9,38 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    
+   
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.3/trix.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.3/trix.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+   
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">   
+    <style>
+        .btn-info{
+            color:white;
+        }
+    </style>
+    <script>
+        flatpickr('#published_at',{
+            enableTime:true
+        })
+    </script>
+   
+  
+  
+   
 </head>
 
 <body>
@@ -79,13 +101,20 @@
                     <div class="col-md-4">
                         <ul class="ul list-group ">
                             <li class="list-group-item bg-dark">
-                                <a href="" class="text-secondary">Post</a>
+                                <a href="{{ route('posts.index')}}" class="text-secondary">Post</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="{{ route('categories.index')}}" class="text-secondary">Category</a>
                             </li>
                         </ul>
+
+                        <ul class="ul list-group mt-5">
+                            <li class="list-group-item">
+                                <a href="{{ route('trashed-posts.index')}}" class="text-secondary">Trashed Posts</a>
+                            </li>
+                        </ul>
                     </div>
+
                     <div class="col-md-8">
                         @yield('content')
                     </div>
