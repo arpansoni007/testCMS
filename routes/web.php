@@ -14,13 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-/* ----------------------------- Catefory Routes ---------------------------- */
+/* ----------------------------- Category Routes ---------------------------- */
 Route::resource('categories','CategoriesController');
 Route::get('categories/{id}/destroy', 'CategoriesController@destroy')->name('categories.destroy');
+
+
+/* ------------------------------ Posts Routes ------------------------------ */
+Route::resource('posts','PostsController');
+Route::post('posts/{id}', 'PostsController@update')->name('posts.update');
+
+/* ------------------------------ Trashed Posts ----------------------------- */
+Route::get('trashed-posts','PostsController@trashed')->name('trashed-posts.index');

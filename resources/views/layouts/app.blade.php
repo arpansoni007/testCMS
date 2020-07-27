@@ -79,13 +79,20 @@
                     <div class="col-md-4">
                         <ul class="ul list-group ">
                             <li class="list-group-item bg-dark">
-                                <a href="" class="text-secondary">Post</a>
+                                <a href="{{ route('posts.index')}}" class="text-secondary">Post</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="{{ route('categories.index')}}" class="text-secondary">Category</a>
                             </li>
                         </ul>
+
+                        <ul class="ul list-group mt-5">
+                            <li class="list-group-item">
+                                <a href="{{ route('trashed-posts.index')}}" class="text-secondary">Trashed Posts</a>
+                            </li>
+                        </ul>
                     </div>
+
                     <div class="col-md-8">
                         @yield('content')
                     </div>

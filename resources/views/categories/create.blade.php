@@ -23,10 +23,10 @@
             @csrf
             <div class="form-gro mb-2">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name"/>
+                <input type="text" class="form-control" name="name" id="name"/>
             </div>
             <div class="form-group float-right">
-                <button class="btn btn-success">Add</button>
+                <button class="btn btn-success" type="submit">Add</button>
             </div>
         </form>
     </div>

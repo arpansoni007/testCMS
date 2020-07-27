@@ -15,11 +15,11 @@
 </div>
 @endif
 <div class="d-flex justify-content-end mb-2">
-    <a href="{{ route('categories.create') }}" class="btn btn-success">Add Category</a>
+    <a href="{{ route('posts.create') }}" class="btn btn-success">Add Posts</a>
 </div>
 <div class="card card-default">
     <div class="card-header">
-        Categories
+        Posts
     </div>
 
     @if($errors->any())
@@ -32,30 +32,43 @@
     @endif
 
     <div class="card-body">
-        @if($categories->count() > 0)
+        @if($posts->count() > 0)
         <table class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Published At</th>
                     <th>Action</th>
                 </tr>
 
             </thead>
             <tbody>
-                @foreach($categories as $category)
+         
+                @foreach($posts as $post)
                 <tr>
-                    <td width="75%">{{$category->name}}</td>
-                    <td> <a href="{{route('categories.edit',[$category->id])}}" class="btn btn-info">Edit</a>
-                        <a href="{{route('categories.destroy',[$category->id])}}" class="btn btn-danger" >Delete</a></td>
+                    <td width="13%">{{$post->name}}</td>
+                    <td width="40%"><img width="50%" height="40%" src="{{ Storage::url($post->image) }}"></img></td>
+                    <td width="22%">{{$post->published_at}}</td>
+                   
+                    <td width="45%"> <a href="{{route('posts.edit',[$post->id])}}" class="btn btn-info">Edit</a>
+                    <form style="display:inline;" action="{{route('posts.destroy',[$post->id])}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                       
+                        <button class="btn btn-danger" type="submit">{{$post->trashed() ? 'Delete' : 'Trash'}}</button>
+                        </form>
+                        </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
         @else
-          <h5 class="text-center">No Categories Yet</h5>
+          <h5 class="text-center">No Posts Yet</h5>
+
         @endif
         <div class="float-right">
-            {{$categories->links()}}
+            {{$posts->links()}}
         </div>
     </div>
 </div>

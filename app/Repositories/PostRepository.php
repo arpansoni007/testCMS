@@ -7,7 +7,7 @@ use App\Repositories\RepositoryInterface;
 use Exception;
 use DB;
 
-class CategoryRepository  implements RepositoryInterface
+class PostRepository  implements RepositoryInterface
 {  
   
     public $model;
@@ -38,6 +38,9 @@ class CategoryRepository  implements RepositoryInterface
     {    
         try{ 
             DB::beginTransaction();
+
+            $image = $request->hasFile('photo') ? $request->photo->store('public') : null;
+            $request->merge(['image' => $image]);
             $data = $this->model->create($request->all());
             DB::commit();
             return $data;
@@ -92,16 +95,17 @@ class CategoryRepository  implements RepositoryInterface
     {   
 
         try{ 
-            
+            DB::beginTransaction();
             $data = $this->model->find($id);
             $data->delete();
-           
+            DB::commit();
             return $data;
           
         }
         catch(Exception $e)
         {     
-              return $e->getMessage();
+            DB::rollback();
+            return $e->getMessage();
         }
 
     }
@@ -113,4 +117,5 @@ class CategoryRepository  implements RepositoryInterface
     {
          return $this->model;
     }
+    
 }

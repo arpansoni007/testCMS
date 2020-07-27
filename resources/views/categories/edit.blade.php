@@ -27,7 +27,7 @@
                 <input type="text" class="form-control" name="name" value="{{$category->name}}"/>
             </div>
             <div class="form-group float-right">
-                <button class="btn btn-success">Update</button>
+                <button class="btn btn-success" type="submit">Update</button>
             </div>
         </form>
     </div>
