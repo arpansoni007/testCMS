@@ -19,19 +19,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
 
-
+Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['auth'])->group(function(){
-    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('/page/{page}', 'PageController')->name('page')->where('page','home|about');
 
     /* ----------------------------- Category Routes ---------------------------- */
-    Route::resource('categories','CategoriesController');
     Route::get('categories/{id}/destroy', 'CategoriesController@destroy')->name('categories.destroy');
+    Route::resource('categories','CategoriesController');
 
 
     /* ------------------------------ Posts Routes ------------------------------ */
     Route::resource('posts','PostsController');
-    Route::post('posts/{id}', 'PostsController@update')->name('posts.update');
+    Route::post('posts/{id}', 'PostsController@update')->name('update.posts');
 
     /* ------------------------------ Trashed Posts ----------------------------- */
     Route::get('trashed-posts','PostsController@trashed')->name('trashed-posts.index');

@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+               <h2>{{ isset($title) ? __($title) : config('app.name','Laravel')}}</h2>
                 <div class="card-header bg-dark text-secondary">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">

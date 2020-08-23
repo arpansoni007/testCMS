@@ -15,11 +15,13 @@ class PostsController extends Controller
     public $posts;
     public $model;
     public $category;
+    public $postCollection;
     public function __construct(Post $posts,Category $category)
     {   
         $this->model = $posts;
         $this->posts = new PostRepository($posts);
         $this->category = $category;
+
 
         $this->middleware('verify.categories.count')->only(['create','store']);
     }
@@ -31,8 +33,8 @@ class PostsController extends Controller
     public function index(Post $post)
     {   
         $posts = $this->posts->getAll();
-        $categories = $this->category->all();
-        return view('posts.index')->with('posts',$posts)->with('categories',$categories);
+        
+        return view('posts.index')->with('posts',$posts);
     }
 
     /**
@@ -78,7 +80,7 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {                 
         $posts = $this->posts->show($id);
         $categories = $this->category->all();
         return view('posts.edit')->with('posts',$posts)->with('categories',$categories);
@@ -92,7 +94,7 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(PostRequest $request,$id)
-    {   
+    {  
         $this->posts->update($request,$id);
         Session::flash('success','Post Updated Successfully');
         return redirect()->route('posts.index');
@@ -121,7 +123,8 @@ class PostsController extends Controller
     public function trashed()
     {   
         $posts = Post::onlyTrashed()->paginate(\Config::get('default.perPage'));
-        return view('posts.index')->with('posts',$posts);
+        $categories = $this->category->all();
+        return view('posts.index')->with('posts',$posts)->with('categories',$categories);
     }
 
 
