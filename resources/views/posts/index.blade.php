@@ -50,7 +50,7 @@
                 <tr>
                     <td width="13%">{{$post->name}}</td>
                     <td width="30%"><img width="40%" height="30%" src="{{ Storage::url($post->image) }}"></img></td>
-                    <td width="10%">@if($categories->count() > 0)<a href="{{ route('categories.edit',['category'=>$post->category->id])}}">{{$post->category->name}}</a>@endif</td>
+                    <td width="10%">@if($post->category->count() > 0)<a href="{{ route('categories.edit',['category'=>$post->category->id])}}">{{$post->category->name}}</a>@endif</td>
                     <td width="22%">{{$post->published_at}}</td>
                     <td width="50%"> 
                     @if($post->trashed())

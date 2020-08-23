@@ -19,9 +19,8 @@
         
     
     <div class="card-body">
-        <form action="{{ route('posts.update',['id'=>$posts->id])}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('update.posts',[$posts['id']])}}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
             <div class="form-gro mb-2">
                 <label for="name">Title</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{$posts->name}}"/>
@@ -47,13 +46,14 @@
                  @endforeach
                 </select>   
             </div>
+            <img src="{{Storage::url($posts->image)}}" />
             <div class="form-gro mb-2">
                 <label for="photo">Photo</label>
                 <input type="file" class="form-control"  name="photo" id="photo" value="{{$posts->image}}" />
             </div>
 
             <div class="form-group float-right">
-                <button class="btn btn-success">Update</button>
+                <button type="submit" class="btn btn-success">Update</button>
             </div>
         </form>
     </div>

@@ -22,7 +22,7 @@ class PostRepository  implements RepositoryInterface
     public function getAll()
     {
         try{
-            $data = $this->model->paginate(\Config::get('default.perPage'));
+            $data = $this->model->with('category')->paginate(\Config::get('default.perPage'));
             return $data;
         }  
         catch(Exception $e)
@@ -59,18 +59,30 @@ class PostRepository  implements RepositoryInterface
     public function update(Request $request,$id)
     {
         try{ 
-            DB::beginTransaction();
-            $data = $this->model->find($id);
+           
             $image = $request->hasFile('photo') ? $request->photo->store('public') : null;
-            $this->model->deleteImage();
-            $request->merge(['image' => $image]);
-            $data->update($request->all());
-            DB::commit();
+            if($image != null)
+            {
+                $this->model->deleteImage();
+                $request->merge(['image' => $image]);
+            }
+
+           
+            $data = $this->model->where('id',$id)->update([
+                'name'=>$request->name,
+                'description'=>$request->description,
+                'content'=>$request->content,
+                'image'=>$request->image,
+                'published_at'=>$request->published_at,
+                'category_id'=>$request->category_id
+                ]);
+            
+            
             return $data;
           
         }
         catch(Exception $e)
-        {     DB::rollback();
+        {  
               return $e->getMessage();
         }
     }
@@ -81,7 +93,7 @@ class PostRepository  implements RepositoryInterface
     public function show($id)
     {
         try{ 
-            $data = $this->model->find($id);
+            $data = $this->model->with('category')->find($id);
             return $data;
           
         }
